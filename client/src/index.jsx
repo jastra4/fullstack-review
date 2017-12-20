@@ -23,10 +23,10 @@ class App extends React.Component {
       data: term
     })
     .done(function() {
-      alert( "success" );
+      console.log( "success" );
     })
     .fail(function() {
-      alert( "error" );
+      console.log( "error" );
     });
   }
 
