@@ -10,7 +10,12 @@ db.once('open', function() {
 
 
 let repoSchema = mongoose.Schema({
-	id: Number,
+	id: {
+		type: Number,
+		unique: true,
+		required: true
+	},
+	owner: String,
 	name: String,
   description: String,
   html_url: String,
@@ -23,26 +28,39 @@ let Repo = mongoose.model('Repo', repoSchema);
 
 let save = (repos) => {
 	repos.forEach(function(repo) {
+	    // check for duplicates 
+	    var id = repo.id;
+	    Repo.findOne({id})
+	    .then(function(result) {
+	    	if (result === null) {
+	    		createRepo(repo);
+	    	}
+	    	console.log('*********',result)
+	    })
+	    .catch(function(err) {
+	    	console.log(err);
+	    });
 
-		  var newRepo = new Repo({
-		    owner: repo.owner.login,	
-				id: repo.id,
-				name: repo.name,
-				description: repo.description,
-				html_url: repo.html_url,
-				created_at: repo.created_at,
-				updated_at: repo.updated_at,
-				score: repo.score
-			});    	
-			Repo.update(newRepo, {upsert:true});
-		  //save to database
-		  newRepo.save(function(err, newRepo) {
-		    if (err) {
-		    	return console.error(err);
-		    }
-		    console.log('newRepo.save ran successfully: ', newRepo);
-		  })
-    
+	    // create the model
+	    function createRepo(repo) {
+			  var newRepo = new Repo({
+			  	id: repo.id,
+			    owner: repo.owner.login,	
+					name: repo.name,
+					description: repo.description,
+					html_url: repo.html_url,
+					created_at: repo.created_at,
+					updated_at: repo.updated_at,
+					score: repo.score
+				});    	
+			  // save to database
+			  newRepo.save(function(err, newRepo) {
+			    if (err) {
+			    	return console.error(err);
+			    }
+			    //console.log('newRepo.save ran.');
+			  })
+	    }
 	});
 }
 
@@ -53,41 +71,3 @@ module.exports.Repo = Repo;
 // from terminal root: mongod --dbpath data/db
 
 // type mongo from data folder to launch mongo shell
-
-// repos.forEach(function(repo) {
-//     // check for duplicates 
-//     var key = repo.id;
-//     Repo.findOne({'id': key}, function(err, repo) {
-//     	if (err) {
-//     		console.log('not found');
-//     		createRepo(repo);
-//     	} else {
-//     		console.log(repo.name, ' repo already exists in db');
-//     		//createRepo(repo);
-//     	}
-//     })
-
-    
-
-//     // create the model
-//     function createRepo(repo) {
-//     	//console.log(repo.owner.login);
-// 		  var newRepo = new Repo({
-// 		    owner: repo.owner.login,	
-// 				id: repo.id,
-// 				name: repo.name,
-// 				description: repo.description,
-// 				html_url: repo.html_url,
-// 				created_at: repo.created_at,
-// 				updated_at: repo.updated_at,
-// 				score: repo.score
-// 			});    	
-// 		  // save to database
-// 		  newRepo.save(function(err, newRepo) {
-// 		    if (err) {
-// 		    	return console.error(err);
-// 		    }
-// 		    console.log('newRepo.save ran successfully: ', newRepo);
-// 		  })
-//     }
-// 	});

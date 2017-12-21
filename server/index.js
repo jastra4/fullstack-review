@@ -19,9 +19,9 @@ app.post('/repos', function (req, res) {
 
 app.get('/repos', function (req, res) {
 
-  db.Repo.find()
+  db.Repo.find().limit(25).sort({score: -1})
   .then(function(result) {
-   console.log('GET request to mongodb ran successfully: ');
+   console.log('GET request to mongodb ran.');
    res.send(result);
    res.sendStatus(200);
   });
