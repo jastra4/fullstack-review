@@ -25,13 +25,13 @@ let save = (repos) => {
 
 	repos.forEach(function(repo) {
     // check for duplicates 
-    console.log('Repo ID: ', repo.id);
+    //console.log('Repo ID: ', repo.id);
     var key = repo.id;
     Repo.find(function(err, key) {
     	if (err) {
     		createRepo(repo);
     	} else {
-    		console.log('repo already exists in db');
+    		console.log(repo.name, ' repo already exists in db');
     	}
     })
 
@@ -60,6 +60,7 @@ let save = (repos) => {
 }
 
 module.exports.save = save;
+module.exports.Repo = Repo;
 
 // to start running mongodb
 // from terminal root: mongod --dbpath data/db

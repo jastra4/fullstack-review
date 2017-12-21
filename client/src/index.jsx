@@ -25,7 +25,21 @@ class App extends React.Component {
       data: term
     })
     .done(function() {
-      console.log( "success" );
+      console.log( "posted successfully" );
+    })
+    .fail(function() {
+      console.log( "error" );
+    });
+  }
+
+  load() {
+    $.ajax({
+      type: 'GET',
+      url: '/repos'
+    })
+    .done(function(data) {
+      console.log('loaded sucessfully: ', data);
+      $('body').append(data);
     })
     .fail(function() {
       console.log( "error" );
@@ -33,6 +47,7 @@ class App extends React.Component {
   }
 
   render () {
+    this.load();
     return (<div>
       <h1>Github Fetcher</h1>
       <RepoList repos={this.state.repos}/>

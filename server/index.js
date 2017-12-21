@@ -19,8 +19,15 @@ app.post('/repos', function (req, res) {
   // save the repo information in the database
 
 app.get('/repos', function (req, res) {
-  // TODO - your code here!
-  // This route should send back the top 25 repos
+  db.Repo.find({ name: { $gt: 'MVP' } });
+
+  var query = db.Repo.find()
+  .then(function(result) {
+   console.log('GET request to mongodb ran successfully.');
+   res.send(result);
+   res.sendStatus(200);
+  });
+
 });
 
 let port = 1128;
