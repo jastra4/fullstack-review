@@ -21,7 +21,7 @@ app.get('/repos', function (req, res) {
 
   db.Repo.find()
   .then(function(result) {
-   console.log('GET request to mongodb ran successfully: ', result);
+   console.log('GET request to mongodb ran successfully: ');
    res.send(result);
    res.sendStatus(200);
   });

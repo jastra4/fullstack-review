@@ -23,21 +23,23 @@ let Repo = mongoose.model('Repo', repoSchema);
 
 let save = (repos) => {
 	repos.forEach(function(repo) {
-    console.log('save: ', repo.name);
     // check for duplicates 
-    // var key = repo.id;
-    // Repo.find(function(err, key) {
-    // 	if (err) {
-    // 		createRepo(repo);
-    // 	} else {
-    // 		//console.log(repo.name, ' repo already exists in db');
-    // 		createRepo(repo);
-    // 	}
-    // })
+    var key = repo.id;
+    Repo.findOne({'id': key}, function(err, repo) {
+    	if (err) {
+    		console.log('not found');
+    		createRepo(repo);
+    	} else {
+    		console.log(repo.name, ' repo already exists in db');
+    		//createRepo(repo);
+    	}
+    })
 
     // create the model
-    //function createRepo(repo) {
-		  var newRepo = new Repo({	
+    function createRepo(repo) {
+    	//console.log(repo.owner.login);
+		  var newRepo = new Repo({
+		    owner: repo.owner.login,	
 				id: repo.id,
 				name: repo.name,
 				description: repo.description,
@@ -51,11 +53,10 @@ let save = (repos) => {
 		    if (err) {
 		    	return console.error(err);
 		    }
-		    console.log('newRepo.save ran successfully');
+		    console.log('newRepo.save ran successfully: ', newRepo);
 		  })
-    });
-
-	//});
+    }
+	});
 }
 
 module.exports.save = save;
