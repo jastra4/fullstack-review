@@ -4,7 +4,7 @@ import RepoListEntry from './RepoListEntry.jsx';
 const RepoList = (props) => (
 	<div>
 	  <div>
-	    <h4> Repo List Component </h4>
+	    <h4> Repo List </h4>
 	    There are {props.repos.length} repos.
 	  </div>
 	  <div className="repo-list">    
