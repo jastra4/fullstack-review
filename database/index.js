@@ -10,19 +10,30 @@ db.once('open', function() {
 
 
 let repoSchema = mongoose.Schema({
-  html_url: String,
+	id: Number,
+	name: String,
   description: String,
+  html_url: String,
   created_at: String,
-  updated_at: String
+  updated_at: String,
+  score: Number
 });
 
 let Repo = mongoose.model('Repo', repoSchema);
 
 let save = (repos) => {
-	console.log('SAVE: ', repos);
-  // TODO: Your code here
-  // This function should save a repo or repos to
-  // the MongoDB
+	repos.forEach(function(repo) {
+	// data fields:
+	// repo.html_url
+	// repo.created_at
+	// repo.updated_at
+	// repo.score
+	// repo.description
+	// repo.name
+	// repo.id   
+	});
+
+	//console.log('SAVE: ', repos);
 }
 
 module.exports.save = save;
