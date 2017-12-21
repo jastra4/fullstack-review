@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import Search from './components/Search.jsx';
 import RepoList from './components/RepoList.jsx';
+import RepoListEntry from './components/RepoList.jsx';
 
 class App extends React.Component {
   constructor(props) {
@@ -35,15 +36,13 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    self = this;
     $.ajax({
       type: 'GET',
       url: '/repos'
     })
-    .done(function(data) {
+    .done((data) => {
       console.log('loaded sucessfully: ', data);
-      //$('body').append(data.length);
-      self.update(data);
+      this.update(data);
     })
     .fail(function() {
       console.log( "error" );
@@ -58,5 +57,7 @@ class App extends React.Component {
     </div>)
   }
 }
+
+export default App;
 
 ReactDOM.render(<App />, document.getElementById('app'));
