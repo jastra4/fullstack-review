@@ -10,15 +10,11 @@ class App extends React.Component {
     this.state = { 
       repos: []
     }
-
   }
 
   search (term) {
     console.log(`${term} was searched`);
-    // TODO: ajax request
     term = {user: term};
-
-    //'http://localhost:1128/' = app
     $.ajax({
       type: 'POST',
       url: '/repos',
@@ -32,14 +28,22 @@ class App extends React.Component {
     });
   }
 
-  load() {
+  update(data) {
+    this.setState({
+      repos: data
+    });
+  }
+
+  componentDidMount() {
+    self = this;
     $.ajax({
       type: 'GET',
       url: '/repos'
     })
     .done(function(data) {
       console.log('loaded sucessfully: ', data);
-      $('body').append(data);
+      //$('body').append(data.length);
+      self.update(data);
     })
     .fail(function() {
       console.log( "error" );
@@ -47,7 +51,6 @@ class App extends React.Component {
   }
 
   render () {
-    this.load();
     return (<div>
       <h1>Github Fetcher</h1>
       <RepoList repos={this.state.repos}/>
