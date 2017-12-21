@@ -22,17 +22,40 @@ let repoSchema = mongoose.Schema({
 let Repo = mongoose.model('Repo', repoSchema);
 
 let save = (repos) => {
-	repos.forEach(function(repo) {
-	// data fields:
-	// repo.html_url
-	// repo.created_at
-	// repo.updated_at
-	// repo.score
-	// repo.description
-	// repo.name
-	// repo.id   
-	});
 
+	repos.forEach(function(repo) {
+    // check for duplicates 
+    console.log('Repo ID: ', repo.id);
+    var key = repo.id;
+    Repo.find(function(err, key) {
+    	if (err) {
+    		createRepo(repo);
+    	} else {
+    		console.log('repo already exists in db');
+    	}
+    })
+
+    function createRepo(repo) {
+      // create the model
+		  var newRepo = new Repo({	
+				id: repo.id,
+				name: repo.name,
+				description: repo.description,
+				html_url: repo.html_url,
+				created_at: repo.created_at,
+				updated_at: repo.updated_at,
+				score: repo.score
+			});    	
+
+		  // save to database
+		  newRepo.save(function(err, newRepo) {
+		    if (err) {
+		    	return console.error(err);
+		    }
+		  })
+    }
+
+	});
 	//console.log('SAVE: ', repos);
 }
 
@@ -40,3 +63,5 @@ module.exports.save = save;
 
 // to start running mongodb
 // from terminal root: mongod --dbpath data/db
+
+// type mongo from data folder to launch mongo shell
