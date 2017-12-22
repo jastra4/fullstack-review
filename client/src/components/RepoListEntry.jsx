@@ -5,7 +5,7 @@ const RepoListEntry = ({repo}) => ( // why can't this work if repo does not get 
 		<div className="repo-list-id"> ID: {repo.id} </div>
 		<div className="repo-list-name"> Name: {repo.name} </div>
 		<div className="repo-list-description"> Descritpion: {repo.description} </div>
-		<div className="repo-list-url"> Url: {repo.html_url} </div>
+		<a href={repo.html_url}>URL: {repo.html_url}</a>
 		<div className="repo-list-create-at"> Created on: {repo.created_at} </div>
 		<div className="repo-list-updated-at"> Last updated: {repo.updated_at} </div>
 		<div className="repo-list-score"> Score: {repo.score} </div>

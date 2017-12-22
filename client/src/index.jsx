@@ -11,6 +11,7 @@ class App extends React.Component {
     this.state = { 
       repos: []
     }
+    this.getRepos = this.getRepos.bind(this);
   }
 
   search (term) {
@@ -21,8 +22,10 @@ class App extends React.Component {
       url: '/repos',
       data: term
     })
-    .done(function() {
-      console.log( "posted successfully" );
+    .done(() => { // arrow functions dont mess up this scope
+      // call get
+      this.getRepos();
+      console.log( "posted successfully ", this );
     })
     .fail(function() {
       console.log( "error" );
@@ -35,7 +38,7 @@ class App extends React.Component {
     });
   }
 
-  componentDidMount() {
+  getRepos() {
     $.ajax({
       type: 'GET',
       url: '/repos'
@@ -46,7 +49,11 @@ class App extends React.Component {
     })
     .fail(function() {
       console.log( "error" );
-    });
+    });    
+  }
+
+  componentDidMount() {
+    this.getRepos();
   }
 
   render () {
